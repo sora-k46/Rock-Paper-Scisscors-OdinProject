@@ -67,3 +67,5 @@ function game() {
     console.log("Draw: " + userScore)
   }
 }
+
+game()
