@@ -38,3 +38,32 @@ function play(playerSelection, computerSelection) {
   }
 
 }
+
+function game() {
+  let userScore = 0;
+  let botScore = 0;
+  let result;
+  for (let i = 0; i < 5; i++) {
+    let userInput = prompt("Enter you weapon");
+    result = play(userInput, getComputerChoice());
+    switch (result) {
+      case "Lose":
+        botScore++;
+        console.log(`Score: ${userScore}`)
+        break;
+      case "Win":
+        userScore++;
+        console.log(`Score: ${userScore}`)
+        break;
+      default:
+        console.log(`Score: ${userScore}`)
+    }
+  }
+  if (userScore > botScore) {
+    console.log("User win!: " + userScore)
+  } else if (userScore < botScore) {
+    console.log("User lose!: " + userScore)
+  } else {
+    console.log("Draw: " + userScore)
+  }
+}
