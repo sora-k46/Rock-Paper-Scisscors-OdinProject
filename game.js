@@ -39,33 +39,71 @@ function play(playerSelection, computerSelection) {
 
 }
 
+function end(count, max, user, bot) {
+  if (count === max) {
+    const result = document.getElementById("result")
+    if (user > bot) {
+      result.textContent = "User win!"
+    } else if (user < bot) {
+      result.textContent = "Bot win!"
+    } else {
+      if (count !== 1)
+        result.textContent = "Draw!"
+    }
+  }
+}
+
 function game() {
   let userScore = 0;
   let botScore = 0;
-  let result;
-  for (let i = 0; i < 5; i++) {
-    let userInput = prompt("Enter you weapon");
-    result = play(userInput, getComputerChoice());
-    switch (result) {
-      case "Lose":
-        botScore++;
-        console.log(`Score: ${userScore}`)
-        break;
-      case "Win":
-        userScore++;
-        console.log(`Score: ${userScore}`)
-        break;
-      default:
-        console.log(`Score: ${userScore}`)
-    }
-  }
-  if (userScore > botScore) {
-    console.log("User win!: " + userScore)
-  } else if (userScore < botScore) {
-    console.log("User lose!: " + userScore)
-  } else {
-    console.log("Draw: " + userScore)
-  }
+  let userInput = null;
+  let scoreArr = [];
+
+  let roundCount = 1;
+  const roundMax = 5;
+
+  const scoreboard_user = document.getElementById("user")
+  const scoreboard_bot = document.getElementById("bot")
+  const scoreboard_round = document.getElementById("round")
+
+  const btns = document.querySelectorAll("button")
+  btns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+
+      userInput = btn.getAttribute("id")
+      computerInput = getComputerChoice()
+
+      if (roundCount !== roundMax + 1) {
+
+        result = play(userInput, computerInput);
+        switch (result) {
+          case "Lose":
+            botScore++;
+            scoreboard_round.textContent = roundCount;
+            scoreboard_bot.textContent = botScore;
+            scoreArr.push(`User: ${userInput}\nComputer: ${computerInput}`)
+            break;
+
+          case "Win":
+            userScore++;
+            scoreboard_round.textContent = roundCount;
+            scoreboard_user.textContent = userScore;
+            scoreArr.push(`User: ${userInput}\nComputer: ${computerInput}`)
+            break;
+
+          default:
+            scoreboard_round.textContent = roundCount;
+            scoreArr.push(`User: ${userInput}\nComputer: ${computerInput}`)
+            scoreboard_user.textContent = userScore;
+            scoreboard_bot.textContent = botScore;
+        }
+        roundCount++;
+      } else {
+        btn.setAttribute("disabled", "");
+        end(roundCount - 1, roundMax, userScore, botScore);
+      }
+    })
+  })
 }
 
 game()
